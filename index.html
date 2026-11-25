@@ -1,22 +1,294 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>enverxdev — тестовая страница</title>
+  <meta name="color-scheme" content="dark">
+  <title>enverxdev — Site under construction</title>
   <style>
+    :root {
+      --background: #08110e;
+      --panel: #0b1511;
+      --border: #2d5844;
+      --mint: #81f3a5;
+      --lime: #83f87a;
+      --muted: #a3bbb0;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
-      max-width: 42rem;
-      margin: 12vh auto;
-      padding: 0 1.5rem;
-      font: 1rem/1.6 system-ui, sans-serif;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      min-height: 100svh;
+      margin: 0;
+      padding: clamp(20px, 6vw, 72px);
+      background: var(--background);
+      color: var(--mint);
+      font: 1rem/1.5 var(--mono);
+    }
+
+    .rain {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: space-between;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .rain-side {
+      display: flex;
+      justify-content: space-evenly;
+      width: clamp(28px, 9vw, 140px);
+      padding-inline: 6px;
+      color: #61e995;
+      font-size: clamp(10px, 1.4vw, 19px);
+    }
+
+    .rain-side:last-child { flex-direction: row-reverse; }
+
+    .column {
+      display: flex;
+      flex: 0 0 auto;
+      flex-direction: column;
+      white-space: pre;
+      text-align: center;
+      line-height: clamp(22px, 3.1vh, 34px);
+      opacity: var(--opacity);
+      animation: rain var(--period) linear infinite;
+      animation-delay: var(--delay);
+    }
+
+    .column span { display: block; }
+    .stream span:nth-child(3n) { opacity: .28; }
+    .stream span:nth-child(5n) { opacity: .55; }
+
+    @keyframes rain {
+      from { transform: translateY(-33.333333%); }
+      to { transform: translateY(0); }
+    }
+
+    .terminal {
+      position: relative;
+      width: min(100%, 945px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+    }
+
+    .title-bar {
+      display: flex;
+      align-items: center;
+      gap: .85em;
+      min-height: 48px;
+      padding: 10px clamp(18px, 2.4vw, 32px);
+      border-bottom: 1px solid var(--border);
+      font-size: clamp(.8rem, 1.6vw, 1.5rem);
+    }
+
+    .title-bar::before {
+      flex: none;
+      width: .22em;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: currentColor;
+      content: "";
+    }
+
+    .language-control {
+      position: relative;
+      margin-inline-start: auto;
+    }
+
+    .language-control::after {
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-end: .75rem;
+      width: .43rem;
+      height: .43rem;
+      border: solid var(--mint);
+      border-width: 0 1px 1px 0;
+      transform: translateY(-70%) rotate(45deg);
+      pointer-events: none;
+      content: "";
+    }
+
+    .language-picker {
+      display: block;
+      appearance: none;
+      min-height: 2.25rem;
+      padding: .42rem 2rem .42rem .75rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--panel);
+      color: var(--mint);
+      font: .875rem/1.4 var(--mono);
+      cursor: pointer;
+    }
+
+    .language-picker:hover { border-color: var(--mint); }
+
+    .terminal-body {
+      padding: clamp(21px, 2.6vw, 40px);
+      font-size: clamp(.95rem, 1.9vw, 1.75rem);
+    }
+
+    .command { margin: 0 0 .7em; }
+
+    h1 {
+      margin: 0;
+      color: var(--lime);
+      font-size: clamp(1.55rem, 3.1vw, 3rem);
+      line-height: 1.19;
+      letter-spacing: -.025em;
+    }
+
+    [dir="rtl"] h1 { letter-spacing: normal; }
+
+    .last-word { white-space: nowrap; }
+
+    .cursor {
+      display: inline-block;
+      width: .45em;
+      height: .72em;
+      margin-inline-start: .35em;
+      background: currentColor;
+      animation: blink 2s step-end infinite;
+    }
+
+    .note { margin: .56em 0 1em; color: var(--muted); }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: .07em;
+      text-underline-offset: .23em;
+    }
+
+    a:hover { color: var(--lime); }
+    :is(a, .language-picker):focus-visible {
+      outline: 2px solid var(--mint);
+      outline-offset: 4px;
+    }
+
+    @keyframes blink { 70% { opacity: 0; } }
+
+    @media (max-width: 520px) {
+      .rain-side { padding: 0; }
+      .column:nth-child(n + 3) { display: none; }
+      .title-bar { min-height: 40px; }
+    }
+
+    @media (max-width: 360px) {
+      .title-bar { gap: .5em; padding-inline: 12px; }
+      .language-picker { padding-inline: .625rem 1.75rem; font-size: .8rem; }
+      .language-control::after { inset-inline-end: .625rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .column, .cursor { animation: none; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Привет! Это enverxdev.</h1>
-    <p>Тестовая страница опубликована на GitHub Pages.</p>
+  <div class="rain" aria-hidden="true">
+    <div class="rain-side"></div>
+    <div class="rain-side"></div>
+  </div>
+
+  <main class="terminal" aria-labelledby="status">
+    <div class="title-bar" dir="ltr">
+      <span>enverxdev.github.io</span>
+      <div class="language-control">
+        <select class="language-picker" id="language" aria-label="Language">
+          <option value="en" lang="en" selected>English</option>
+          <option value="ru" lang="ru">Русский</option>
+          <option value="ar" lang="ar">العربية</option>
+          <option value="zh-Hans" lang="zh-Hans">简体中文</option>
+          <option value="tr" lang="tr">Türkçe</option>
+          <option value="fr" lang="fr">Français</option>
+          <option value="es" lang="es">Español</option>
+        </select>
+      </div>
+    </div>
+    <div class="terminal-body">
+      <p class="command" dir="ltr">enverxdev@web:~$ ./launch</p>
+      <div id="message">
+        <h1 id="status"><span id="status-start">Site under </span><span class="last-word"><span id="status-end">construction</span><span class="cursor" aria-hidden="true"></span></span></h1>
+        <p class="note" id="note">Check back later.</p>
+        <a href="https://github.com/enverxdev"><bdi>GitHub <span aria-hidden="true">↗</span></bdi></a>
+      </div>
+    </div>
   </main>
+
+  <script>
+    const translations = {
+      en: { heading: 'Site under construction', note: 'Check back later.', language: 'Language' },
+      ru: { heading: 'Страница в разработке', note: 'Загляни позже.', language: 'Язык' },
+      ar: { heading: 'الموقع قيد الإنشاء', note: 'عُد لاحقًا.', language: 'اللغة' },
+      'zh-Hans': { heading: '网站建设中', note: '请稍后再来。', language: '语言' },
+      tr: { heading: 'Site yapım aşamasında', note: 'Daha sonra tekrar uğra.', language: 'Dil' },
+      fr: { heading: 'Site en construction', note: 'Repassez plus tard.', language: 'Langue' },
+      es: { heading: 'Sitio en construcción', note: 'Vuelve más tarde.', language: 'Idioma' },
+    };
+
+    const languagePicker = document.querySelector('#language');
+    const message = document.querySelector('#message');
+    const statusStart = document.querySelector('#status-start');
+    const statusEnd = document.querySelector('#status-end');
+    const note = document.querySelector('#note');
+
+    function updateLanguage() {
+      const language = languagePicker.value;
+      const translation = translations[language];
+      const lastWordStart = translation.heading.lastIndexOf(' ') + 1;
+
+      document.documentElement.lang = language;
+      document.title = `enverxdev — ${translation.heading}`;
+      languagePicker.setAttribute('aria-label', translation.language);
+      message.dir = language === 'ar' ? 'rtl' : 'ltr';
+      statusStart.textContent = translation.heading.slice(0, lastWordStart);
+      statusEnd.textContent = translation.heading.slice(lastWordStart);
+      note.textContent = translation.note;
+    }
+
+    languagePicker.addEventListener('change', updateLanguage);
+    updateLanguage();
+
+    const streams = [
+      'f i 7 k a 9 d 4 e 5 o x a z 8 r v c b 1 u 6 j s 0 m q 3 g',
+      'h 7 s 3 a e b p x t r s b z k 8 q g z n d 5 0 c 2 v w 1',
+      '1 b p f 8 n c u 4 h z b 5 g k a v 9 e t 3 6 j 0 n 7 m s',
+      '0 n f e 7 j h 5 p w z x 2 r d 8 k q 3 l 6 v t m 4 c a s',
+      'p f t k 8 2 e f 4 h k 0 7 z g b r 5 1 c p v 6 y q 8 i d',
+      '6 a 3 d g 1 a q 0 a e 9 8 t n b 7 c p 6 k z u s 2 m h 5',
+      'u d e i 5 c a b o v 9 m p v t 3 s e t 8 g z a j 4 1 x 0',
+      'v m 3 u a k f z b d 8 w y 9 i p n g 6 e 3 o t c r 2 l 5',
+    ];
+    const opacities = [.29, .24, .11, .05];
+
+    document.querySelectorAll('.rain-side').forEach((side, sideIndex) => {
+      streams.slice(sideIndex * 4, sideIndex * 4 + 4).forEach((stream, index) => {
+        const column = document.createElement('div');
+        column.className = 'column';
+        column.style.setProperty('--opacity', opacities[index]);
+        column.style.setProperty('--period', `${22 + index * 5 + sideIndex * 3}s`);
+        column.style.setProperty('--delay', `-${3 + index * 4 + sideIndex * 5}s`);
+
+        const symbols = stream.split(' ');
+        const sequence = document.createElement('div');
+        sequence.className = 'stream';
+        for (const symbol of symbols) {
+          const glyph = document.createElement('span');
+          glyph.textContent = symbol;
+          sequence.append(glyph);
+        }
+        column.append(sequence, sequence.cloneNode(true), sequence.cloneNode(true));
+        side.append(column);
+      });
+    });
+  </script>
 </body>
 </html>
